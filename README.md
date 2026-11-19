@@ -27,11 +27,29 @@
 
 ## 快速开始
 
-### 1. 构建并启动 macOS 菜单栏应用
+### 1. 直接下载预编译版（推荐）
+
+前往仓库右侧 [**Releases**](https://github.com/R0t-tEN/antigravity-token-pulse-macos/releases) 下载 `AntigravityTokenPulse-v*-macos-universal.zip`（macOS 14+ Universal 通用版，原生支持 Apple Silicon 与 Intel）：
+
+1. 解压后将 `AntigravityTokenPulse.app` 拖入 `/Applications`（应用程序）目录。
+2. 因采用本地 Ad-Hoc 签名，首次运行若被 macOS Gatekeeper 拦截，在终端执行一次解除隔离属性即可：
 
 ```bash
-./scripts/build-app.sh
+xattr -cr /Applications/AntigravityTokenPulse.app
+open /Applications/AntigravityTokenPulse.app
+```
+
+### 2. 从源码构建并启动
+
+```bash
+./scripts/build-app.sh               # 构建当前架构 .app（加 --universal 可打双架构通用包）
 open ./build/AntigravityTokenPulse.app
+```
+
+如需打包带 SHA256 校验的 Release 压缩包：
+
+```bash
+./scripts/package-release.sh         # 输出到 build/release/
 ```
 
 如需安装到系统「应用程序」目录：
@@ -43,7 +61,7 @@ open /Applications/AntigravityTokenPulse.app
 
 > 首次打开若提示设置「登录时自动启动」，建议先将 `.app` 移入 `/Applications` 目录后再在应用设置中开启。
 
-### 2. 配置 `agy` CLI 状态栏（可选）
+### 3. 配置 `agy` CLI 状态栏（可选）
 
 可直接通过菜单栏应用右上角 **设置 (`⚙`) -> 一键启用 agy 状态栏** 配置，或在终端执行：
 
@@ -95,7 +113,8 @@ open /Applications/AntigravityTokenPulse.app
 │       └── AppMain.swift          # 应用生命周期入口
 ├── scripts/
 │   ├── generate-icon.swift        # 生成应用图标 AppIcon.icns
-│   ├── build-app.sh               # 一键编译并 Ad-Hoc 签名 .app
+│   ├── build-app.sh               # 一键编译并 Ad-Hoc 签名 .app（支持 --universal）
+│   ├── package-release.sh         # 运行测试、打包 Universal .zip 并生成 SHA256
 │   ├── install-cli.sh             # 一键部署/还原 agy CLI 状态栏
 │   └── run-tests.sh               # Swift 核心与 CLI 状态栏单元测试
 └── tests/
